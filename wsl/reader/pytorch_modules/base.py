@@ -14,7 +14,7 @@ from wsl.common.log import get_logger
 from wsl.common.utils import get_callable_from_string
 from wsl.inference.data.objects import AnnotationType
 from wsl.reader.pytorch_modules import WSL_READER_CLASS_MAP
-from wsl.reader.pytorch_modules.hf.modeling_wsl import WSLeaderSample, WSLReaderConfig
+from wsl.reader.pytorch_modules.hf.modeling_wsl import WSLReaderConfig, WSLReaderSample
 from wsl.retriever.pytorch_modules import PRECISION_MAP
 
 logger = get_logger(__name__, level=logging.INFO)
@@ -110,7 +110,7 @@ class WSLReaderBase(torch.nn.Module):
     def read(
         self,
         text: List[str] | List[List[str]] | None = None,
-        samples: List[WSLeaderSample] | None = None,
+        samples: List[WSLReaderSample] | None = None,
         input_ids: torch.Tensor | None = None,
         attention_mask: torch.Tensor | None = None,
         token_type_ids: torch.Tensor | None = None,
@@ -125,7 +125,7 @@ class WSLReaderBase(torch.nn.Module):
         progress_bar: bool = False,
         *args,
         **kwargs,
-    ) -> List[WSLeaderSample] | List[List[WSLeaderSample]]:
+    ) -> List[WSLReaderSample] | List[List[WSLReaderSample]]:
         """
         Reads the given text.
 
@@ -192,7 +192,8 @@ class WSLReaderBase(torch.nn.Module):
                 candidates = [candidates]
 
             samples = [
-                WSLeaderSample(tokens=t, candidates=c) for t, c in zip(text, candidates)
+                WSLReaderSample(tokens=t, candidates=c)
+                for t, c in zip(text, candidates)
             ]
 
         return self._read(

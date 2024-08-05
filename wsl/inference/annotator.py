@@ -9,7 +9,7 @@ import torch
 from omegaconf import DictConfig, OmegaConf
 from pprintpp import pformat
 
-from wsl.common.log import get_logger, print_relik_text_art
+from wsl.common.log import get_logger
 from wsl.common.upload import get_logged_in_username, upload
 from wsl.common.utils import CONFIG_NAME, from_cache
 from wsl.inference.data.objects import (
@@ -17,7 +17,6 @@ from wsl.inference.data.objects import (
     Candidates,
     Span,
     TaskType,
-    Triplets,
     WSLOutput,
 )
 from wsl.inference.data.splitters.base_sentence_splitter import BaseSentenceSplitter
@@ -147,7 +146,6 @@ class WSL:
 
         self._index: Dict[TaskType, WSLRetriever] = {
             TaskType.SPAN: None,
-            TaskType.TRIPLET: None,
         }
 
         if index is None:
@@ -162,12 +160,6 @@ class WSL:
         elif isinstance(index, BaseDocumentIndex):
             if self.task in [TaskType.SPAN, TaskType.BOTH]:
                 self._index[TaskType.SPAN] = index
-            if self.task in [TaskType.TRIPLET, TaskType.BOTH]:
-                self._index[TaskType.TRIPLET] = index
-
-            # check if both retrievers are the same
-            if self._index[TaskType.SPAN] == self._index[TaskType.TRIPLET]:
-                logger.warning("The index is the same for both tasks.")
 
         elif isinstance(index, (Dict, DictConfig)):
             for task_type, i in index.items():
@@ -381,7 +373,7 @@ class WSL:
                 "Retriever will be ignored."
             )
 
-        windows_candidates = {TaskType.SPAN: None, TaskType.TRIPLET: None}
+        windows_candidates = {TaskType.SPAN: None}
         # candidates are provided, use them and skip retrieval
         if candidates is not None:
             # again, check if candidates is a dict
@@ -463,7 +455,6 @@ class WSL:
             for window in blank_windows:
                 window._d[f"{task_type.value}_candidates"] = []
                 window._d["predicted_spans"] = []
-                window._d["predicted_triplets"] = []
 
         if self.reader is not None:
             # start_read = time.time()
@@ -499,7 +490,6 @@ class WSL:
         output = []
         for w in merged_windows:
             span_labels = []
-            triplets_labels = []
             # span extraction should always be present
             if getattr(w, "predicted_spans", None) is not None:
                 span_labels = sorted(
@@ -518,17 +508,7 @@ class WSL:
                     ],
                     key=lambda x: x.start,
                 )
-                # triple extraction is optional, if here add it
-                if getattr(w, "predicted_triplets", None) is not None:
-                    triplets_labels = [
-                        Triplets(
-                            subject=span_labels[subj],
-                            label=label,
-                            object=span_labels[obj],
-                            confidence=conf,
-                        )
-                        for subj, label, obj, conf in w.predicted_triplets
-                    ]
+
             # we also want to add the candidates to the output
             candidates_labels = defaultdict(list)
             for task_type, _ in windows_candidates.items():
@@ -542,10 +522,8 @@ class WSL:
                 tokens=documents_tokens[w.doc_id],
                 id=w.doc_id,
                 spans=span_labels,
-                triplets=triplets_labels,
                 candidates=Candidates(
-                    span=candidates_labels.get(TaskType.SPAN, []),
-                    triplet=candidates_labels.get(TaskType.TRIPLET, []),
+                    candidates=candidates_labels.get(TaskType.SPAN, []),
                 ),
             )
             output.append(sample_output)
@@ -588,8 +566,7 @@ class WSL:
 
         """
 
-        print_relik_text_art()
-
+        print("WSL module")
         cache_dir = kwargs.pop("cache_dir", None)
         force_download = kwargs.pop("force_download", False)
 
@@ -626,7 +603,7 @@ class WSL:
 
         config = OmegaConf.load(config_path)
         # do we want to print the config? I like it
-        logger.info(f"Loading Relik from {model_name_or_dir}")
+        logger.info(f"Loading WSL from {model_name_or_dir}")
         logger.info(pformat(OmegaConf.to_container(config)))
 
         task = config.task
@@ -701,11 +678,11 @@ class WSL:
         # logger.info(pformat(OmegaConf.to_container(config)))
 
         # load wsl from config
-        relik = hydra.utils.instantiate(
+        wsl = hydra.utils.instantiate(
             config, _recursive_=False, retriever=retriever, index=index, reader=reader
         )
 
-        return relik
+        return wsl
 
     def save_pretrained(
         self,

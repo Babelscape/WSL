@@ -14,11 +14,11 @@ def predict(
     is_eval: bool,
     output_path: Optional[str],
 ) -> None:
-    relik_reader = WSLReaderForSpanExtraction(
+    wsl_reader = WSLReaderForSpanExtraction(
         model_path, dataset_kwargs={"use_nme": True}, device="cuda"
     )
     samples = list(load_wsl_reader_samples(dataset_path))
-    predicted_samples = relik_reader.read(
+    predicted_samples = wsl_reader.read(
         samples=samples, token_batch_size=token_batch_size, progress_bar=True
     )
     if is_eval:

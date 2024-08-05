@@ -48,15 +48,15 @@ def convert_tokens_to_char_annotations(
     sample.probs_window_labels_chars = char_probs_annotations
 
 
-class RelikReaderPredictor:
+class WSLReaderPredictor:
     def __init__(
         self,
-        relik_reader_core: WSLReaderBase,
+        wsl_reader_core: WSLReaderBase,
         dataset_conf: Optional[dict] = None,
         predict_nmes: bool = False,
         dataloader: Optional[DataLoader] = None,
     ) -> None:
-        self.relik_reader_core = relik_reader_core
+        self.wsl_reader_core = wsl_reader_core
         self.dataset_conf = dataset_conf
         self.predict_nmes = predict_nmes
         self.dataloader: DataLoader | None = dataloader
@@ -138,7 +138,7 @@ class RelikReaderPredictor:
         if progress_bar:
             iterator = tqdm(iterator, desc="Predicting")
 
-        model_device = next(self.relik_reader_core.parameters()).device
+        model_device = next(self.wsl_reader_core.parameters()).device
 
         with torch.inference_mode():
             for batch in iterator:
@@ -147,7 +147,7 @@ class RelikReaderPredictor:
                     "cpu" if model_device == torch.device("cpu") else "cuda"
                 ):
                     batch = move_data_to_device(batch, model_device)
-                    batch_out = self.relik_reader_core._batch_predict(**batch)
+                    batch_out = self.wsl_reader_core._batch_predict(**batch)
                 # update prediction position position
                 for sample in batch_out:
                     if sample._mixin_prediction_position >= next_prediction_position:

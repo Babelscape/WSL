@@ -98,7 +98,6 @@ def load_retriever(
     # retriever section
     _retriever: Dict[TaskType, WSLRetriever] = {
         TaskType.SPAN: None,
-        TaskType.TRIPLET: None,
     }
 
     # check retriever type, it can be a GoldenRetriever, a DictConfig or a Dict
@@ -138,13 +137,6 @@ def load_retriever(
     if task in [TaskType.SPAN, TaskType.BOTH]:
         _retriever[TaskType.SPAN] = _instantiate_retriever(
             retriever[TaskType.SPAN],
-            device,
-            precision,
-            **kwargs,
-        )
-    if task in [TaskType.TRIPLET, TaskType.BOTH]:
-        _retriever[TaskType.TRIPLET] = _instantiate_retriever(
-            retriever[TaskType.TRIPLET],
             device,
             precision,
             **kwargs,
@@ -248,7 +240,6 @@ def load_index(
     # index
     _index: Dict[TaskType, BaseDocumentIndex] = {
         TaskType.SPAN: None,
-        TaskType.TRIPLET: None,
     }
 
     # check retriever type, it can be a BaseDocumentIndex, a DictConfig or a Dict
@@ -287,13 +278,6 @@ def load_index(
             precision,
             **kwargs,
         )
-    if task in [TaskType.TRIPLET, TaskType.BOTH]:
-        _index[TaskType.TRIPLET] = _instantiate_index(
-            index[TaskType.TRIPLET],
-            device,
-            precision,
-            **kwargs,
-        )
 
     # clean up None retrievers from the dictionary
     _index = {task_type: i for task_type, i in _index.items() if i is not None}
@@ -328,13 +312,13 @@ def load_reader(
 
     if not isinstance(reader, (WSLReaderBase, DictConfig, Dict, str)):
         raise ValueError(
-            f"`reader` must be a `RelikReaderBase`, a `DictConfig`, "
+            f"`reader` must be a `WSLReaderBase`, a `DictConfig`, "
             f"a `Dict`, or a `str`, got `{type(reader)}`."
         )
 
     if isinstance(reader, str):
         reader = {
-            "_target_": "wsl.reader.pytorch_modules.base.RelikReaderBase.from_pretrained",
+            "_target_": "wsl.reader.pytorch_modules.base.WSLReaderBase.from_pretrained",
             "model_name_or_dir": reader,
         }
 

@@ -4,7 +4,7 @@ from lightning.pytorch.callbacks import Callback
 
 from wsl.reader.data.wsl_reader_sample import WSLReaderSample
 from wsl.reader.utils.metrics import f1_measure, safe_divide
-from wsl.reader.utils.relik_reader_predictor import RelikReaderPredictor
+from wsl.reader.utils.relik_reader_predictor import WSLReaderPredictor
 from wsl.reader.utils.special_symbols import NME_SYMBOL
 
 
@@ -125,22 +125,3 @@ class StrongMatching:
         }
 
         return {k: round(v, 5) for k, v in out_dict.items()}
-
-
-class ELStrongMatchingCallback(Callback):
-    def __init__(self, dataset_path: str, dataset_conf) -> None:
-        super().__init__()
-        self.dataset_path = dataset_path
-        self.dataset_conf = dataset_conf
-        self.strong_matching_metric = StrongMatching()
-
-    def on_validation_epoch_start(self, trainer, pl_module) -> None:
-        relik_reader_predictor = RelikReaderPredictor(pl_module.relik_reader_core_model)
-        predicted_samples = relik_reader_predictor.predict(
-            self.dataset_path,
-            samples=None,
-            dataset_conf=self.dataset_conf,
-        )
-        predicted_samples = list(predicted_samples)
-        for k, v in self.strong_matching_metric(predicted_samples).items():
-            pl_module.log(f"val_{k}", v)

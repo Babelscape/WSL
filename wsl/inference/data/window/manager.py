@@ -91,28 +91,6 @@ class WindowManager:
                 ]
                 for i, doc_mentions in enumerate(mentions)
             ]
-        elif (
-            task_type == TaskType.TRIPLET
-            and annotation_type == AnnotationType.CHAR
-            and mentions is not None
-        ):
-            # we need to move the mentions to the word level, i.e. find the start of the word with character m[0] and the end of the word with character m[1]
-            mentions = [
-                [
-                    [
-                        next(
-                            i for i, token in enumerate(doc_tokens) if token.idx >= m[0]
-                        ),
-                        next(
-                            i
-                            for i, token in enumerate(doc_tokens)
-                            if token.idx + len(token.text) >= m[1]
-                        ),
-                    ]
-                    for m in doc_mentions
-                ]
-                for doc_tokens, doc_mentions in zip(documents_tokens, mentions)
-            ]
 
         # set splitter params
         if hasattr(self.splitter, "window_size"):

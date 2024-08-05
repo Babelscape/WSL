@@ -9,13 +9,13 @@ from transformers.modeling_utils import PoolerEndLogits
 from .configuration_wsl import WSLReaderConfig
 
 
-class WSLeaderSample:
+class WSLReaderSample:
     def __init__(self, **kwargs):
         super().__setattr__("_d", {})
         self._d = kwargs
 
     def __getattribute__(self, item):
-        return super(WSLeaderSample, self).__getattribute__(item)
+        return super(WSLReaderSample, self).__getattribute__(item)
 
     def __getattr__(self, item):
         if item.startswith("__") and item.endswith("__"):
