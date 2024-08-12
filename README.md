@@ -32,7 +32,7 @@ pip install .
 ## Usage
 
 WSL is composed of two main components: a retriever and a reader.
-The retriever is responsible for retrieving relevant senses from a senses inventory (e.g WordNet),
+The retriever is responsible for retrieving relevant senses from a senses inventory (e.g. WordNet),
 while the reader is responsible for extracting spans from the input text and link them to the retrieved documents.
 WSL can be used with the `from_pretrained` method to load a pre-trained pipeline.
 
