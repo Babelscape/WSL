@@ -41,7 +41,7 @@ from wsl import WSL
 from wsl.inference.data.objects import WSLOutput
 
 wsl_model = WSL.from_pretrained("Babelscape/wsl-base")
-relik_out: WSLOutput = wsl_model("Bus drivers drive busses for a living.")
+WSLOutput = wsl_model("Bus drivers drive busses for a living.")
 ```
 
     WSLOutput(
