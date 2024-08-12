@@ -54,7 +54,6 @@ WSLOutput = wsl_model("Bus drivers drive busses for a living.")
         Span(start=18, end=24, label='bus: a vehicle carrying many passengers; used for public transport', text='busses'),
         Span(start=31, end=37, label='living: the financial means whereby one lives', text='living')
     ],
-    triples=[],
     candidates=Candidates(
         candidates=[
                     {"text": "bus driver: someone who drives a bus", "id": "bus_driver%1:18:00::", "metadata": {}},
