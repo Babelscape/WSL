@@ -24,7 +24,7 @@ Installation from PyPI
 ```bash
 git clone https://github.com/Babelscape/WSL
 cd WSL
-pip install -r requirements.txt
+pip install .
 ```
 
 
