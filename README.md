@@ -109,16 +109,6 @@ If you use any part of this work, please consider citing the paper as follows:
 }
 ```
 
-## Acknowledgments
-
-Special thanks to the authors of [Relik](https://github.com/SapienzaNLP/relik/tree/main) for their amazing work. Their contributions to the Relik repository have been invaluable to this project. 
-
-- [Riccardo Orlando](https://github.com/Riccorl)
-- [Pere-Lluís Huguet Cabot](https://github.com/LittlePea13)
-- [Edoardo Barba](https://github.com/edobobo)
-- [Roberto Navigli](https://github.com/navigli)
-
-
 ## License
 
 The data and software are licensed under cc-by-nc-sa-4.0 you can read it here [Creative Commons Attribution-NonCommercial-ShareAlike 4.0](./wsl_data_license.txt).
