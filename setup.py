@@ -113,7 +113,7 @@ setuptools.setup(
     name="wsl",
     version=VERSION["VERSION"],
     author="Andrei Stefan Bejgu, Edoardo Barba, Riccardo Orlando, Pere-Lluís Huguet Cabot, Roberto Navigli",
-    author_email="contact@babelscape.com",
+    author_email="info@babelscape.com",
     description="W",
     long_description=long_description,
     long_description_content_type="text/markdown",
