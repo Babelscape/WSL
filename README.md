@@ -16,7 +16,7 @@
   
 </div>
 
-With this work we introduce a new task: Word Sense Linking (WSL). WSL enhances Word Sense Disambiguation by carrying out both candidate identification (new!) and candidate disambiguation. Our Word Sense Linking model is designed to identify and disambiguate spans of text to their most suitable senses from a reference inventory. 
+With this work we introduce a new task: **Word Sense Linking (WSL)**. WSL enhances Word Sense Disambiguation by carrying out both candidate identification (new!) and candidate disambiguation. Our Word Sense Linking model is designed to identify and disambiguate spans of text to their most suitable senses from a reference inventory. 
 
 ## Installation
 
