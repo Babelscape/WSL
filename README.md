@@ -6,7 +6,7 @@
 
 
 [![Conference](http://img.shields.io/badge/ACL-2024-4b44ce.svg)](https://2024.aclweb.org/)
-[![Paper](http://img.shields.io/badge/paper-ACL--anthology-B31B1B.svg)](https://aclanthology.org/)
+[![Paper](http://img.shields.io/badge/paper-ACL--anthology-B31B1B.svg)](https://aclanthology.org/2024.findings-acl.851/)
 [![Hugging Face Collection](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-FCD21D)](https://huggingface.co/collections/Babelscape/word-sense-linking-66ace2182bc45680964cefcb)
 
 ![i](./assets/Sapienza_Babelscape.png)
